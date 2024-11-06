@@ -1,5 +1,5 @@
 let G = 50;     // Variable gravitational constant
-let ScaleFactor = 0.05;
+let ScaleFactor = 0.05;     // Scalefactor
 
 class Body{
     constructor(x, y, v1, v2, mass, colour){
@@ -15,7 +15,6 @@ class Body{
     getdir(other){
         return p5.Vector.sub(this.pos, other.pos);
     }
-
 
     // Method to calculate magnitute of gravitational force exerted on 'other' body
     // f = G*(m1*m2)/(distance**2)
@@ -36,33 +35,38 @@ class Body{
     }
 
     update(){
-        if(this.colour=="orange") this.history.push(this.pos.copy());    // Push current pos to history before updating
+        this.history.push(this.pos.copy());    // Push current pos to history before updating
         this.velocity.add(this.acceleration);
         this.pos.add(this.velocity);
         this.acceleration.set(0, 0);
 
-        if (this.history.length > 100) {
+        if (this.history.length > 80) {
             this.history.splice(0, 1);
           }
     }
 
-    show(){
-        stroke("green");
-        strokeWeight(2);
-        if(this.colour == "orange"){
-            for(let i=0; i < this.history.length; i++){
-                if(i < this.history.length-1){
-                    let pos = this.history[i];
-                    let pos2 = this.history[i+1];
-                    line(pos.x, pos.y, pos2.x, pos2.y);
-                }
+    // Method draws a path behind the body. The path tapers off in size
+    drawPath(){
+        stroke(this.colour);
+        let scaled = max(0.80 * this.r, 1.5);     // Initial strokeWeight of stars is 80% of body's radius
+        let divisionSize = scaled/this.history.length;
+        for(let i=this.history.length-1; i>0; i--){
+            let amount = i*divisionSize;
+            strokeWeight(amount);
+            if(i > 0){
+                let pos = this.history[i];
+                let pos2 = this.history[i-1];
+                line(pos.x, pos.y, pos2.x, pos2.y);
             }
         }
-
-        stroke("orange");
-        strokeWeight(2);
-        fill(this.colour);
-        ellipse(this.pos.x, this.pos.y, this.r*2);
     }
 
+    show(){
+        stroke(this.colour);
+        strokeWeight(2);
+
+        this.drawPath();
+        fill(255);
+        ellipse(this.pos.x, this.pos.y, this.r*2);
+    }
 }

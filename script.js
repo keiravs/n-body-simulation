@@ -3,12 +3,12 @@ function setup(){
     background(0);
 
     // Stars
-    body1 = new Body(400, 250, 0.1, 0.3, 8, "blue");
-    body2 = new Body(100, 600, -0.3, -0.2, 8, "blue");
-    body3 = new Body(600, 600, 0.4, -0.2, 8, "blue");
+    body1 = new Body(400, 100, 0, 1, 33, "blue");
+    body2 = new Body(100, 700, 0, -2, 24, "red");
+    body3 = new Body(700, 700, 0, 1, 16, "green");
 
     // Planet
-    body4 = new Body(400, 600, 0, 0, 0.05, "orange");
+    body4 = new Body(300, 200, 0, 0, 0.01, "orange");
 }
 
 function draw(){
